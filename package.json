@@ -1,0 +1,30 @@
+{
+  "name": "abio",
+  "version": "1.0.0",
+  "description": "Auto Battler Game",
+  "main": "server.js",
+  "scripts": {
+    "build": "babel backend -d build",
+    "start": "npm run build && node build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoJeff/AB-IO.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LoJeff/AB-IO/issues"
+  },
+  "homepage": "https://github.com/LoJeff/AB-IO#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5"
+  }
+}
