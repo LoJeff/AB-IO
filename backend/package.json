@@ -4,7 +4,7 @@
   "description": "Auto Battler Game",
   "main": "server.js",
   "scripts": {
-    "build": "babel backend -d build",
+    "build": "babel src -d build",
     "start": "npm run build && node build/server.js"
   },
   "repository": {
