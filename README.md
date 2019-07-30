@@ -1,8 +1,5 @@
 # Auto Battler IO game
 
-## Directories
-
-
 ## Developer commands:
  To load the node modules:
 ```bash
@@ -21,4 +18,8 @@ To build for client for production:
 ```bash
 cd client
 npm run build # Resulting front end code will be in clients/build/
+```
+To build the backend with babel:
+```bash
+npm run build
 ```
