@@ -11,6 +11,7 @@ class App extends Component {
         const connections = new connectionEmitter(socket);
         // functions
         this.joinGameRoom = this.joinGameRoom.bind(this);
+        this.dummyFunction = this.dummyFunction.bind(this);
         
         // state
         this.state = {
@@ -24,6 +25,10 @@ class App extends Component {
         this.state.connections.joinGameRoom(name,gameid);
     }
 
+    dummyFunction(){
+        this.state.connections.dummyFunction();
+    }
+
     render(){
         return(
             <div>
@@ -33,6 +38,8 @@ class App extends Component {
             	<input id="gameid"></input>
             	<br/>
             	<button onClick={this.joinGameRoom}>Start</button>
+                <br/>
+                <button onClick={this.dummyFunction}>TEST</button>
             </div>
         );
     }

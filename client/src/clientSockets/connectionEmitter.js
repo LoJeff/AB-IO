@@ -11,6 +11,12 @@ class connectionEmitter {
 		client.emit("joinGameRoom",data);
 		console.log("emitted joinGameRoom event");
 	}
+
+	dummyFunction() {
+		const client = this.client;
+		client.emit("dummyFunction");
+		console.log("emitted dummyFunction event");
+	}
 }
 
 export default connectionEmitter;
