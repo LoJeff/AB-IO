@@ -1,5 +1,6 @@
 import { PLAYER } from "../player.js";
 import { GAME_BOARD } from "../combatLogic/battle.js";
+import { POS } from "../combatLogic/unit.js";
 
 const maxGames = 1;
 const maxPlayers = 6;
@@ -66,6 +67,11 @@ class connectionHandler{
 				curGame.addPlayer({player: new PLAYER(3)});
 				curGame.addPlayer({player: new PLAYER(4)});
 				curGame.addPlayer({player: new PLAYER(5)});
+				curGame.players[0].addUnit("Warrior");
+				curGame.players[0].addUnit("Warrior");
+				curGame.players[1].addUnit("Warrior");
+				console.log(curGame.players[0]);
+				console.log(curGame.players[1]);
 				console.log(curGame);
 			} catch(err) {
 				console.log(err)

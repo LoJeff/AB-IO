@@ -1,13 +1,15 @@
-const WARRIOR = require('./unitTypes/warrior.js')
+import WARRIOR from './unitTypes/warrior.js' ;
+
+const boardWidth = 5;
 
 const UNIT_TYPES = {
-    "Warrior": WARRIOR
+    "Warrior": new WARRIOR()
 };
 
 class POS {
-    constructor() {
-        this.x = null;
-        this.y = null;
+    constructor(x = null, y = null) {
+        this.x = x;
+        this.y = y;
     }
 
     setX(x) {
@@ -28,32 +30,31 @@ class POS {
     }
 }
 
-class UNIT_BATTLE_INFO {
-    constructor() {
-        this.pos = new POS();
-    }
+function validXY(x, y) {
+    return (-boardWidth <= x && x <= boardWidth 
+        && -boardWidth <= y && y <= boardWidth);
 }
 
-class UNIT_STATIC_INFO {
-    constructor(type) {
-        this.type = type;
-        this.lvl = 1;
-        this.pos = new POS();
-        this.curHP = UNIT_TYPES[this.type][1].hp;
-    }
+function validPos(pos) {
+    return (-boardWidth <= pos.x && pos.x <= boardWidth 
+        && -boardWidth <= pos.y && pos.y <= boardWidth);
 }
 
 class UNIT {
-    constructor(id, type) {
-        this.id = id;
-        this.battle = new UNIT_BATTLE_INFO();
-        this.static = new UNIT_STATIC_INFO(type);
+    constructor(type, player) {
+        this.player = player;
+        this.type = type;
+        this.lvl = 1;
+        this.pos = new POS();
+        this.curHP = UNIT_TYPES[this.type].lvl[this.lvl].hp;
     }
 }
 
 module.exports = {
     UNIT,
-    UNIT_STATIC_INFO,
-    UNIT_BATTLE_INFO,
-    POS
+    UNIT_TYPES,
+    POS,
+    boardWidth,
+    validXY,
+    validPos
 }

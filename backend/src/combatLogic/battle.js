@@ -1,59 +1,132 @@
-import { UNIT, UNIT_STATIC_INFO, UNIT_BATTLE_INFO } from "./unit.js";
-import { POS } from "./unit.js";
+import { UNIT } from "./unit.js";
+import { POS, boardWidth, validXY } from "./unit.js";
+
+Object.prototype.pushByRef = function(x, y) {
+    this[JSON.stringify(x)] = y;
+}
+
+Object.prototype.getByRef = function(x) {
+    return this[JSON.stringify(x)];
+}
+
+Object.prototype.delByRef = function(x) {
+    delete this[JSON.stringify(x)];
+}
 
 class TILE {
     constructor(x, y) {
-        this.pos = new POS();
-        this.pos.setXY(x, y);
-        this.neighbour = [];
+        this.pos = new POS(x, y);
+        this.neighbours = [];
         this.unit = null;
     }
 }
 
-const boardWidth = 5;
+class TILE_GRAPH {
+    constructor() {
+        this.tiles = {};
+    }
+
+    push(tile) {
+        this.tiles[tile.pos.x + "," + tile.pos.y] = tile;
+    }
+
+    get(pos) {
+        return this.tiles[pos.x + "," + pos.y];
+    }
+
+    del(pos) {
+        delete this.tiles[pos.x + "," + pos.y];
+    }
+
+    log() {
+        const entries = Object.entries(this.tiles);
+        console.log(entries);
+    }
+}
 
 class GAME_BOARD {
     constructor() {
-        this.teams = [];
-        this.tiles = {};
+        this.tiles = new TILE_GRAPH();
         var stack = [];
 
         //push tile (0,0)
-        this.tiles[0] = { 0: new TILE(0, 0)};
-        stack.push(this.tiles[0][0]);
+        this.tiles.push(new TILE(0, 0));
+        stack.push(this.tiles.get(new POS(0, 0)));
 
         while (stack.length > 0) {
             let cur = stack.pop();
+            //Iterate through all the directions of tiles 
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
-                    if (!(i == 0 && j == 0) && this.validXY(cur.pos.x + i, cur.pos.y + j)) {
-                        let x = cur.pos.x + i;
-                        let y = cur.pos.y + j;
-                        if (this.tiles[x] == undefined) this.tiles[x] = {};
-                        if (this.tiles[x][y] == undefined) {
-                            this.tiles[x][y] = new TILE(x, y);
-                            stack.push(this.tiles[x][y]);
+                    //Check for valid tile
+                    if (!(i == 0 && j == 0) && validXY(cur.pos.x + i, cur.pos.y + j)) {
+                        let nbrPos = new POS(cur.pos.x + i, cur.pos.y + j);
+
+                        //Creates the tile if it doesn't exist already then adds it as a neighbour
+                        if (this.tiles.get(nbrPos) == undefined) {
+                            this.tiles.push(new TILE(nbrPos.x, nbrPos.y));
+                            stack.push(this.tiles.get(nbrPos));
                         }
-                        cur.neighbour.push(this.tiles[x][y]);
+                        cur.neighbours.push(this.tiles.get(nbrPos));
                     }
                 }
             }
         }
-    }
-
-    validXY(x, y) {
-        return (-boardWidth <= x && x <= boardWidth 
-            && -boardWidth <= y && y <= boardWidth);
+        this.logTiles();
     }
 
     logTiles() {
-        for (let i = -boardWidth; i <= boardWidth; i++) {
-            console.log(i + ":");
-            for (let j = -boardWidth; j <= boardWidth; j++) {
-                console.log("   " + j + ":" + "{");
-                console.log(this.tiles[i, j]);
-                console.log("   }");
+        this.tiles.log();
+    }
+
+    nearestEnemy(src) {
+        //Using Dijkstra
+        var queue = [];
+        queue.push(src);
+        let prevMap = {};
+        prevMap.pushByRef(src.pos, null);
+        let found = null;
+        while (queue.length > 0) {
+            let cur = queue.shift();
+            //Visit all neighbours of cur
+            for (neighbour in cur.neighbours) {
+                //Check if not visited
+                if (prevMap.getByRef(neighbour.pos) == undefined) {
+                    //Push previous tile if the neighbouring tile is empty or has an enemy
+                    if (neighbour.unit == null || neighbour.unit.player != src.unit.player) {
+                        prevMap.pushByRef(neighbour.pos, cur.pos);
+                    }
+                    //Check if the neighbouring tile has a unit on it
+                    if (neighbour.unit != null) {
+                        //Check if the unit is an enemy
+                        if (neighbour.unit.player != src.unit.player) {
+                            found = neighbour;
+                        }
+                        break;
+                    } else {
+                        queue.push(neighbour);
+                    }
+                }
             }
+            if (found != null) break;
+        }
+        var path = [];
+        if (found != null) {
+            let cur = found.pos;
+            while (cur != null) {
+                path.unshift(cur);
+                cur = prevMap.getByRef(cur);
+            }
+        }
+        return path;
+    }
+
+    placeUnit(unit, pos) {
+        if (this.tiles[pos.x][pos.y].unit == null) {
+            this.tiles[pos.x][pos.y].unit = unit;
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -1,7 +1,7 @@
 import UNIT_TYPE from './unitType.js';
 
 class WARRIOR extends UNIT_TYPE {
-    constructor(lvl) {
+    constructor() {
         let unitInfo = {};
         unitInfo.hp1 = 100;
         unitInfo.dmg1 = 30;
@@ -10,7 +10,7 @@ class WARRIOR extends UNIT_TYPE {
         unitInfo.hp3 = 400;
         unitInfo.dmg3 = 100;
         unitInfo.range = 1;
-        super(lvl, unitInfo);
+        super(unitInfo);
     }
 }
 
