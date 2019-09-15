@@ -1,9 +1,12 @@
 import express from 'express';
-import http from 'http'
-import socketio from 'socket.io'
-import routes from './routes.js'
-import eventHandlers from './serverSockets/eventHandlers.js'
-import path from 'path'
+import http from 'http';
+import socketio from 'socket.io';
+import routes from './routes.js';
+import eventHandlers from './serverSockets/eventHandlers.js';
+import path from 'path';
+import globalData from './globalData.js';
+
+global.data = new globalData();
 
 const app = express();
 const server = http.createServer(app);
