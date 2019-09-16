@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
 import connectionEmitter from "../clientSockets/connectionEmitter.js";
+import '../css/login_page_styles.css';
 
 class App extends Component {
     constructor(props){
@@ -31,16 +32,36 @@ class App extends Component {
 
     render(){
         return(
-            <div>
-            	<h3>Enter name</h3>
-				<input id="name"></input>
-            	<h3>Enter gameid </h3>
-            	<input id="gameid"></input>
-            	<br/>
-            	<button onClick={this.joinGameRoom}>Start</button>
-                <br/>
-                <button onClick={this.dummyFunction}>TEST</button>
-            </div>
+            <html>
+			  <head>
+				<meta charset="UTF-8" />
+				<title>Player Data Submission Page</title>
+				<link rel="stylesheet" href="../css/login_page_styles.css"/>
+			  </head>
+			  <body>
+				
+				<div id="title_container" class="title">
+					<h2>Auto Battle IO</h2>
+				</div>
+				
+				<div id="interactive_set">
+					<div class="row_of_input">
+						<div id="IGN_input_container">
+							<form > <input type="text" placeholder="Enter your IGN EIGJSLEIJGISEJGOISJEGISJEGLJSELGIJLSEGIJlg"/> </form>
+						</div>
+						<div id="Game_ID_input_container">
+							<form > <input type="text" placeholder="Enter your game lobby ID"/> </form>
+						</div>
+					</div>
+					
+					<div id="submit_button_container">
+						<button type="button">Submit User Data</button>
+					</div>
+				</div>
+				
+
+			  </body>
+			</html>
         );
     }
 }

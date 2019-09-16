@@ -1,0 +1,99 @@
+.row_of_input{
+	width:auto;
+	display:inline-block;
+	float:center;
+	padding-bottom:2%;
+}
+
+#title_container{
+	padding-top:5%;
+	color:black;
+	text-align:center;
+	font-size:26px;
+}
+
+#IGN_input_container{
+	float:left;
+	margin-right:4px;
+}
+
+#Game_ID_input_container{
+	float:left;
+	margin-left:4px;
+}
+
+#interactive_set{
+	padding-top:3%;
+	width:100%;
+	text-align:center;
+}
+
+input{
+  font-family:Comic Sans MS;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 1px 1px #888888;
+  padding:5px;
+  text-align:center;
+  font-size:24px;
+}
+
+input:focus{
+  box-shadow: 2px 3px #999999;
+  outline:none;
+}
+
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; }
+
+button {
+  font-family:Comic Sans MS;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 2px 3px #5DBF61;
+}
+button:active{
+  box-shadow: 1px 1px #999999;
+  transform: translateY(1px);
+  transform: translateX(1px);
+}
+
+button:focus{
+  outline:none;
+}
+
+.submit_button_container{
+	align:center;
+}
+
+body {
+  background-image: url("../images/Submit_Page_Background.png");
+  min-width:900px;
+  min-height:500px;
+}
+
+h2 {
+	font-family:Comic Sans MS;
+	color:white;
+  text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+}
