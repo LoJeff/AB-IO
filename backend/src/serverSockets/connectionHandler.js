@@ -1,37 +1,4 @@
-import { PLAYER } from "../player.js";
-import { GAME_BOARD } from "../combatLogic/battle.js";
-import { POS } from "../combatLogic/unit.js";
-
-const maxGames = 1;
-const maxPlayers = 6;
-
-class GAME {
-	constructor() {
-		this.board = new GAME_BOARD();
-		this.players = [];
-		this.state = 0;
-	}
-
-	addPlayer(data) {
-		if (this.players.length < maxPlayers) {
-			this.players.push(data.player);
-			return true;
-		} else {
-			return false;
-		}
-	}
-}
-
-var game = [];
-
-function addGame() {
-	if (game.length < maxGames) {
-		game.push(new GAME());
-		return game.length - 1;
-	} else {
-		return -1;
-	}
-}
+import globalData from "../globalData.js";
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
@@ -54,24 +21,22 @@ class connectionHandler{
 
 		client.on("dummyFunction",function(data){
 			try {
-				let gameID = addGame();
+				let gameID = global.data.createNewGame("test");
 				if (gameID != -1) {
 					console.log("Created game with id: " + gameID);
 				} else {
 					console.log("Failed to create game");
 				}
-				let curGame = game[0];
-				curGame.addPlayer({player: new PLAYER(0)});
-				curGame.addPlayer({player: new PLAYER(1)});
-				curGame.addPlayer({player: new PLAYER(2)});
-				curGame.addPlayer({player: new PLAYER(3)});
-				curGame.addPlayer({player: new PLAYER(4)});
-				curGame.addPlayer({player: new PLAYER(5)});
-				curGame.players[0].addUnit("Warrior");
-				curGame.players[0].addUnit("Warrior");
-				curGame.players[1].addUnit("Warrior");
-				console.log(curGame.players[0]);
-				console.log(curGame.players[1]);
+				let curGame = global.data.gameArray[0];
+				curGame.addPlayer("bob");
+				curGame.addPlayer("amy");
+				curGame.addPlayer("joe");
+				curGame.addPlayer("jen");
+				curGame.addPlayer("fred");
+				curGame.addPlayer("sam");
+				curGame.findPlayer(0).addUnit("Warrior");
+				console.log(curGame.findPlayer(0));
+				console.log(curGame.findPlayer(1));
 				console.log(curGame);
 			} catch(err) {
 				console.log(err)

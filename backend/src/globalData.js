@@ -1,15 +1,22 @@
-import gameRoomObject from './gameRoomObject.js';
+import game from './game.js';
 
 class globalData {
 	constructor(){
 		this.gameArray = [];
+		this.maxGames = 1;
 	}
 
 	createNewGame(gameid){
-		var newGame = new gameRoomObject();
+		var newGame = new game();
 		newGame.setId(gameid);
 
-		this.gameArray.push(newGame);
+		if (this.gameArray.length < this.maxGames) {
+			this.gameArray.push(newGame);
+			return this.gameArray.length - 1;
+		} else {
+			return -1;
+		}
+		
 	}
 
 	findGame(gameid){
@@ -20,6 +27,7 @@ class globalData {
 	gameExists(gameid){
 		return this.gameArray.some((game) => game.id == gameid);
 	}
+
 }
 
 export default globalData;
