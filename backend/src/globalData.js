@@ -3,7 +3,7 @@ import game from './game.js';
 class globalData {
 	constructor(){
 		this.gameArray = [];
-		this.maxGames = 1;
+		this.maxGames = 10;
 	}
 
 	createNewGame(gameid){
@@ -22,6 +22,10 @@ class globalData {
 	findGame(gameid){
 		var foundGame = this.gameArray.find((game) => game.id == gameid);
 		return foundGame;
+	}
+
+	removeGame(gameid){
+		this.gameArray = this.gameArray.filter( (game) => game.id != gameid);
 	}
 
 	gameExists(gameid){

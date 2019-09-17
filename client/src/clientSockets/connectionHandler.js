@@ -1,21 +1,25 @@
 // This class handles all the game connections socket handlers
 class connectionHandler{
-	constructor(client){
+	constructor(client,react){
 		this.client = client;
+		this.react = react;
+	}
+
+	updateReact(newReact){
+		this.react = newReact;
 	}
 
 	// Notifies the client that a new member has joined the game room
-	updateRoomPlayers(data,react){
+	updateRoomPlayers(data){
 		// data
 			// data.players
-		react.setState({"players": data.players});
-		console.log("update room list",data.players);
+		this.react.setState({"playersList": data.playersList});
 	}
 
-	eventHandlers(react){
+	eventHandlers(){
 		const client = this.client;
 		client.on("updateRoomPlayers",function(data){
-			this.updateRoomPlayers(data,react);
+			this.updateRoomPlayers(data);
 		}.bind(this));
 	}
 

@@ -9,7 +9,13 @@ class connectionEmitter {
 		const client = this.client;
 		const data = {"gameid": gameid, "name": nickname};
 		client.emit("joinGameRoom",data);
-		console.log("emitted joinGameRoom event");
+	}
+
+	leaveGameRoom(nickname,gameid){
+		const client = this.client;
+		const data = {"gameid": gameid, "name": nickname};
+		console.log(data);
+		client.emit("leaveGameRoom",data);
 	}
 
 	dummyFunction() {

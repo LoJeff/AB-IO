@@ -1,7 +1,12 @@
 import React, {Component} from 'react';
 import io from 'socket.io-client';
 import connectionEmitter from "../clientSockets/connectionEmitter.js";
-import '../css/login_page_styles.css';
+import connectionHandler from "../clientSockets/connectionHandler.js";
+
+// Component imports
+import Login from './Login.js';
+import Lobby from './Lobby.js';
+import Game from './Game.js';
 
 class App extends Component {
     constructor(props){
@@ -9,60 +14,72 @@ class App extends Component {
         
         // create socket connection
         const socket = io();
-        const connections = new connectionEmitter(socket);
-        // functions
-        this.joinGameRoom = this.joinGameRoom.bind(this);
-        this.dummyFunction = this.dummyFunction.bind(this);
+        const emitters = new connectionEmitter(socket);
+        const handlers = new connectionHandler(socket,this);
+
+        this.triggerPageChange = this.triggerPageChange.bind(this);
+        this.updateGameid = this.updateGameid.bind(this);
+        this.updateClientName = this.updateClientName.bind(this);
         
         // state
         this.state = {
-            connections: connections
+            emitters: emitters,
+            handlers: handlers,
+            pageState: "login",
+            gameid: "",
+            clientName: "",
         };
     }
 
-    joinGameRoom(){
-        var name = document.getElementById("name").value;
-        var gameid = document.getElementById("gameid").value;
-        this.state.connections.joinGameRoom(name,gameid);
+    componentDidMount(){
+        this.state.handlers.updateReact(this);
+        // Turn on event listening handlers
+        this.state.handlers.eventHandlers();
     }
 
-    dummyFunction(){
-        this.state.connections.dummyFunction();
+    triggerPageChange(newPage){
+        this.setState({pageState: newPage});
     }
+
+    // Login Page
+    updateGameid(newGameId){
+        this.setState({gameid: newGameId});
+    }
+
+    updateClientName(newName){
+        this.setState({clientName: newName});
+    }
+
+    // Lobby Page
 
     render(){
-        return(
-            <html>
-			  <head>
-				<meta charset="UTF-8" />
-				<title>Player Data Submission Page</title>
-				<link rel="stylesheet" href="../css/login_page_styles.css"/>
-			  </head>
-			  <body>
-				
-				<div id="title_container" class="title">
-					<h2>Auto Battle IO</h2>
-				</div>
-				
-				<div id="interactive_set">
-					<div class="row_of_input">
-						<div id="IGN_input_container">
-							<form > <input type="text" placeholder="Enter your IGN EIGJSLEIJGISEJGOISJEGISJEGLJSELGIJLSEGIJlg"/> </form>
-						</div>
-						<div id="Game_ID_input_container">
-							<form > <input type="text" placeholder="Enter your game lobby ID"/> </form>
-						</div>
-					</div>
-					
-					<div id="submit_button_container">
-						<button type="button">Submit User Data</button>
-					</div>
-				</div>
-				
-
-			  </body>
-			</html>
-        );
+        if(this.state.pageState === "login"){
+            return(<Login emitters={this.state.emitters}
+                          handlers={this.state.handlers}
+                          triggerPageChange={this.triggerPageChange} 
+                          updateGameid={this.updateGameid}
+                          updateClientName={this.updateClientName}
+                          clientName={this.state.clientName}
+                          />);
+        }
+        else if (this.state.pageState === "lobby"){
+            return(<Lobby emitters={this.state.emitters}
+                          handlers={this.state.handlers}
+                          triggerPageChange={this.triggerPageChange}
+                          updateGameid={this.updateGameid}
+                          gameid={this.state.gameid}
+                          clientName={this.state.clientName}
+                          />);
+        }
+        else if(this.state.pageState === "game"){
+            return(<Game  emitters={this.state.emitters}
+                          handlers={this.state.handlers}
+                          triggerPageChange={this.triggerPageChange}
+                          />);
+        }
+        else{
+            return(<h1>Page not found </h1>);
+        }
     }
 }
 

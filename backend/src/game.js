@@ -13,10 +13,10 @@ class game {
 		this.id = gameid;
 	}
 
-	addPlayer(playerName) {
+	addPlayer(playerID,playerName) {
 
 		if (this.players.length < this.maxPlayers) {
-			this.players.push(new PLAYER(this.players.length, playerName));
+			this.players.push(new PLAYER(playerID, playerName));
 			return true;
 		} else {
 			return false;
@@ -33,6 +33,14 @@ class game {
 
 	findPlayerId(id) {
 		return this.players.findIndex( (player) => player.id == id);
+	}
+
+	getPlayersList() {
+		return this.players;
+	}
+
+	update(){
+		
 	}
 }
 
