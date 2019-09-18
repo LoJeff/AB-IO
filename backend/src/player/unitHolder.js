@@ -1,4 +1,4 @@
-import { UNIT } from '../combatLogic/unit.js';
+import UNIT from '../combatLogic/unit.js';
 
 const benchSpace = 10;
 
@@ -20,6 +20,14 @@ class UNIT_HOLDER {
     placeOnBoard(newPos) {
         if (validPos(newPos)) {
             console.log("VALID");
+        }
+    }
+
+    getUnit(index) {
+        if (index < this.bench.length) {
+            return this.bench[index];
+        } else {
+            return null;
         }
     }
 }

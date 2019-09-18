@@ -13,6 +13,10 @@ class POS {
         return -(x+y);
     }
 
+    roundedPos() {
+        return new POS(Math.round(this.x), Math.round(this.y));
+    }
+
     rotateCW() {
         let newX = -this.z();
         this.y = -this.x;

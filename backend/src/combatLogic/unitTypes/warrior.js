@@ -1,16 +1,11 @@
-import UNIT_TYPE from './unitType.js';
-
-class WARRIOR extends UNIT_TYPE {
+class WARRIOR {
     constructor() {
-        let unitInfo = {};
-        unitInfo.hp1 = 100;
-        unitInfo.dmg1 = 30;
-        unitInfo.hp2 = 200;
-        unitInfo.dmg2 = 50;
-        unitInfo.hp3 = 400;
-        unitInfo.dmg3 = 100;
-        unitInfo.range = 1;
-        super(unitInfo);
+        this.infoLvl = [
+            undefined,
+            {hp: 100, pDmg: 30, range: 1},
+            {hp: 200, pDmg: 50, range: 1},
+            {hp: 400, pDmg: 100, range: 1}        
+        ];
     }
 }
 
