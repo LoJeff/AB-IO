@@ -28,7 +28,7 @@ class TILE_GRAPH {
 
     log() {
         const entries = Object.entries(this.tiles);
-        console.log(entries);
+        // console.log(entries);
     }
 }
 

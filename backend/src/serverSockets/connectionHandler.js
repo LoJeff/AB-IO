@@ -16,13 +16,19 @@ class connectionHandler{
 			global.data.createNewGame(data.gameid);
 		}
 
-		// add the player to the gamelist
-		global.data.findGame(data.gameid).addPlayer(client.id,data.name);
+		var game = global.data.findGame(data.gameid);
+		// check that max players have not been exceeded
+		if(game.getPlayersList().length < game.maxPlayers){
+			// add the player to the gamelist
+			game.addPlayer(client.id,data.name);
 
-		// broadcast to all users in the room that a new player has joined
-		var playersList = global.data.findGame(data.gameid).getPlayersList();
-		var broadcastData = {"gameid":data.gameid,"playersList":playersList};
-		global.emitter.broadcast_updateRoomPlayers(broadcastData);	
+			// broadcast to all users in the room that a new player has joined
+			var playersList = global.data.findGame(data.gameid).getPlayersList();
+			var broadcastData = {"gameid":data.gameid,"playersList":playersList};
+			global.emitters.broadcast_updateRoomPlayers(broadcastData);	
+		} else{
+			// throw an error, max players reached in this game room
+		}
 	}
 
 	leaveGameRoom(client,data){
@@ -43,8 +49,17 @@ class connectionHandler{
 			// otherwise, update the game room
 			// broadcast to all users in the room that a new player has joined
 			var broadcastData = {"gameid":data.gameid,"playersList":playersList};
-			global.emitter.broadcast_updateRoomPlayers(broadcastData);
+			global.emitters.broadcast_updateRoomPlayers(broadcastData);
 		}
+	}
+
+	startGame(client,data){
+		// Check if players is equal to max length
+
+
+		// find game
+		var game = global.data.findGame(data.gameid);
+		game.beginGame(global.data.serverTickRate);
 	}
 
 	eventHandlers(){
@@ -58,6 +73,9 @@ class connectionHandler{
 			this.leaveGameRoom(client,data);
 		}.bind(this));
 
+		client.on("startGame",function(data){
+			this.startGame(client,data);
+		}.bind(this));
 		client.on("dummyFunction",function(data){
 			try {
 				let gameID = global.data.createNewGame("test");

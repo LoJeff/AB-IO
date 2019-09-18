@@ -14,8 +14,13 @@ class connectionEmitter {
 	leaveGameRoom(nickname,gameid){
 		const client = this.client;
 		const data = {"gameid": gameid, "name": nickname};
-		console.log(data);
 		client.emit("leaveGameRoom",data);
+	}
+
+	startGame(gameid){
+		const client = this.client;
+		const data = {"gameid": gameid};
+		client.emit("startGame",data);
 	}
 
 	dummyFunction() {

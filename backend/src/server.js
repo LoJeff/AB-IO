@@ -20,11 +20,11 @@ app.use('/',routes);
 
 io.on('connection', function(socket){
 	console.log("socket has connected");
-	global.handler = new connectionHandler(io,socket);
-	global.emitter = new connectionEmitter(io);
+	global.handlers = new connectionHandler(io,socket);
+	global.emitters = new connectionEmitter(io);
 
 	// turn on event listeners
-	global.handler.eventHandlers();
+	global.handlers.eventHandlers();
 });
 
 server.listen(8000, () => {

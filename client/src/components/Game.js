@@ -6,6 +6,7 @@ class Game extends Component {
         
         // state
         this.state = {
+            "receivedPackets": [],
         };
     }
 
@@ -14,9 +15,18 @@ class Game extends Component {
     }
 
     render(){
+        const packetList = [];
+        if(this.state.receivedPackets !== undefined){
+            this.state.receivedPackets.forEach(function(packet,index){
+                packetList.push(<li key={index}>{JSON.stringify(packet)}</li>)
+            });
+        }
         return(
             <div>
 				<h1> GAME START</h1>
+                <ul>
+                    {packetList}
+                </ul>
             </div>
         );
     }

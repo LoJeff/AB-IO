@@ -16,10 +16,21 @@ class connectionHandler{
 		this.react.setState({"playersList": data.playersList});
 	}
 
+	updateGame(data){
+		var newState = this.react.state.receivedPackets;
+		newState.push(data);
+		this.react.setState({"receivedPackets": newState});
+	}
+
 	eventHandlers(){
 		const client = this.client;
 		client.on("updateRoomPlayers",function(data){
 			this.updateRoomPlayers(data);
+		}.bind(this));
+
+		client.on("updateGame",function(data){
+			console.log("HIHHI");
+			this.updateGame(data);
 		}.bind(this));
 	}
 

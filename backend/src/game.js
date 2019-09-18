@@ -7,6 +7,8 @@ class game {
 		this.players = [];
 		this.board = new GAME_BOARD();
 		this.maxPlayers = 6;
+
+		this.tickInterval = undefined;
 	}
 	setId(gameid){
 		this.board = new GAME_BOARD();
@@ -39,8 +41,15 @@ class game {
 		return this.players;
 	}
 
+	beginGame(tickRate){
+		// this.update();
+		this.tickInterval = setInterval(this.update.bind(this),1000/tickRate);
+	}
+
 	update(){
-		
+		var date = new Date().toJSON();
+		var sendData = {"gameid": this.id, "time": date};
+		global.emitters.broadcast_gameUpdate(sendData);
 	}
 }
 

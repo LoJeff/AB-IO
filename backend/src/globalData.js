@@ -4,6 +4,7 @@ class globalData {
 	constructor(){
 		this.gameArray = [];
 		this.maxGames = 10;
+		this.serverTickRate = 1;
 	}
 
 	createNewGame(gameid){

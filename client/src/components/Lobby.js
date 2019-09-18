@@ -9,7 +9,7 @@ class Lobby extends Component {
 
         // state
         this.state = {
-            playersList: [],
+            "playersList": [],
         };
     }
 
@@ -27,9 +27,12 @@ class Lobby extends Component {
     }
 
     startGame(){
-
-        // trigger page change
-        this.props.triggerPageChange("game");
+        // if(this.state.playersList.length === 6){
+            // emit game start to server
+            this.props.emitters.startGame(this.props.gameid);
+            // trigger page change
+            this.props.triggerPageChange("game");
+        // }
     }
 
 
