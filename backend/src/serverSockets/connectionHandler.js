@@ -1,4 +1,5 @@
 import globalData from "../globalData.js";
+import POS from "../utils/pos.js";
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
@@ -85,13 +86,22 @@ class connectionHandler{
 					console.log("Failed to create game");
 				}
 				let curGame = global.data.gameArray[0];
-				curGame.addPlayer("bob");
-				curGame.addPlayer("amy");
-				curGame.addPlayer("joe");
-				curGame.addPlayer("jen");
-				curGame.addPlayer("fred");
-				curGame.addPlayer("sam");
-				curGame.findPlayer(0).addUnit("Warrior");
+				curGame.addPlayer(0, "bob");
+				curGame.addPlayer(1, "amy");
+				curGame.addPlayer(2, "joe");
+				curGame.addPlayer(3, "jen");
+				curGame.addPlayer(4, "fred");
+				curGame.addPlayer(5, "sam");
+				console.log(curGame.findPlayer(0));
+				curGame.findPlayer(0).addUnit("warrior");
+				curGame.findPlayer(1).addUnit("warrior");
+				var p0Unit = curGame.findPlayer(0).getUnitBench(0);
+				var p1Unit = curGame.findPlayer(1).getUnitBench(0);
+				curGame.board.placeUnit(p0Unit, new POS(0, 0));
+				curGame.board.placeUnit(p1Unit, new POS(5, -3));
+				curGame.board.moveUnit(p0Unit);
+
+				//curGame.board.logTiles();
 				console.log(curGame.findPlayer(0));
 				console.log(curGame.findPlayer(1));
 				console.log(curGame);

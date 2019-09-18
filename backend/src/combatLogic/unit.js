@@ -1,26 +1,20 @@
-import WARRIOR from './unitTypes/warrior.js';
 import POS from '../utils/pos.js';
-
-const UNIT_TYPES = {
-    "Warrior": new WARRIOR()
-};
+import UNIT_TYPES from './unitTypes/unitType.js';
 
 class UNIT {
-    constructor(type, player) {
-        this.player = player;
+    constructor(type, id) {
+        this.playerId = id;
         this.type = type;
         this.lvl = 1;
+        this.startPos = new POS();
         this.curPos = new POS();
-        this.pos = new POS();
-        this.curHP = UNIT_TYPES[this.type].lvl[this.lvl].hp;
-    }
+        this.nextPos = new POS(-1, -1);
 
-    move(x, y) {
-        this.pos.setXY(x, y);
+        let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
+        this.hp = unitInfo.hp;
+        this.pDmg = unitInfo.pDmg;
+        this.range = unitInfo.range;
     }
 }
 
-module.exports = {
-    UNIT,
-    UNIT_TYPES
-}
+export default UNIT;

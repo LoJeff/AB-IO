@@ -13,6 +13,10 @@ class PLAYER {
     addUnit(type) {
         this.unitHolder.addUnit(type, this.id);
     }
+
+    getUnitBench(index) {
+        return this.unitHolder.getUnit(index);
+    }
 }
 
 export default PLAYER;
