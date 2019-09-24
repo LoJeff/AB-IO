@@ -14,6 +14,10 @@ class HASH {
     del(x) {
         delete this.hash[JSON.stringify(x)];
     }
+
+    size() {
+        return Object.keys(this.hash).length;
+    }
 }
 
 export default HASH;

@@ -11,6 +11,11 @@ class POS {
         this.y = y;
     }
 
+    nullXY() {
+        this.x = null;
+        this.y = null;
+    }
+
     z() {
         return -(x+y);
     }
@@ -25,7 +30,7 @@ class POS {
         this.x = newX;
     }
 
-    rotateCCW(pos) {
+    rotateCCW() {
         let newY = -this.z()
         this.x = -this.y;
         this.y = newY;

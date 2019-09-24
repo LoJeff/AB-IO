@@ -6,6 +6,7 @@ class UNIT {
         this.playerId = id;
         this.type = type;
         this.lvl = 1;
+        this.benchIdx = -1;
         this.startPos = new POS();
         this.curPos = new POS();
         this.nextPos = new POS(-1, -1);
