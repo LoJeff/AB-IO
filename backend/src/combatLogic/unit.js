@@ -1,4 +1,4 @@
-import POS from '../utils/pos.js';
+import { POS } from '../utils/pos.js';
 import UNIT_TYPES from './unitTypes/unitType.js';
 
 class UNIT {

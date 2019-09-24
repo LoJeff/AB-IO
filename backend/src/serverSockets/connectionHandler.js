@@ -1,5 +1,5 @@
 import globalData from "../globalData.js";
-import POS from "../utils/pos.js";
+import { POS } from '../utils/pos.js';
 
 // This class handles all the game connections socket handlers
 class connectionHandler{

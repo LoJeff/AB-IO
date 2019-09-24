@@ -1,10 +1,8 @@
 import UNIT from "./unit.js";
 import PLAYER from '../player/player.js';
-import POS from '../utils/pos.js';
+import { POS, validBBoardPos, boardWidth } from '../utils/pos.js';
 import { TILE, TILE_GRAPH } from '../utils/tile.js';
 import HASH from '../utils/hash.js';
-
-const boardWidth = 5;
 
 class GAME_BOARD {
     constructor() {
@@ -21,7 +19,7 @@ class GAME_BOARD {
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
                     //Check for valid tile
-                    if (i != j && this.validXY(cur.pos.x + i, cur.pos.y + j)) {
+                    if (i != j && this.validBBoardPos(cur.pos.x + i, cur.pos.y + j)) {
                         let nbrPos = new POS(cur.pos.x + i, cur.pos.y + j);
 
                         //Creates the tile if it doesn't exist already then adds it as a neighbour
@@ -34,12 +32,6 @@ class GAME_BOARD {
                 }
             }
         }
-    }
-
-    validXY(x, y) {
-        return (-boardWidth <= x && x <= boardWidth 
-            && -boardWidth <= y && y <= boardWidth
-            && Math.abs(x + y) <= boardWidth);
     }
 
     logTiles() {
@@ -112,7 +104,8 @@ class GAME_BOARD {
         while (queue.length > 0) {
             cur = queue.shift();
             //Visit all neighbours of cur
-            for (neighbour in cur.tile.neighbours) {
+            for (var index in cur.tile.neighbours) {
+                let neighbour = cur.tile.neighbours[index];
                 if (neighbour.unit != null && neighbour.unit.playerId != unit.playerId) {
                     return neighbour.unit;
                 } else if (cur.dist < unit.range && !found.has(neighbour)) {

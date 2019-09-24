@@ -1,3 +1,5 @@
+const boardWidth = 5;
+
 class POS {
     constructor(x = null, y = null) {
         this.x = x;
@@ -27,7 +29,36 @@ class POS {
         let newY = -this.z()
         this.x = -this.y;
         this.y = newY;
-    }    
+    }
+    
+    validPBoardPos() {
+        return (-5 <= this.y && this.y <= -3
+            && 0 <= this.x && this.x <= 4
+            && this.x + this.y <= -1);     
+    }
+
+    validBBoardPos() {
+        return (-boardWidth <= this.x && this.x <= boardWidth 
+            && -boardWidth <= this.y && this.y <= boardWidth
+            && Math.abs(this.x + this.y) <= boardWidth);
+    }
 }
 
-export default POS;
+function validPBoardPos(x, y) {
+    return (-5 <= y && y <= -3
+        && 0 <= x && x <= 4
+        && x + y <= -1);     
+}
+
+function validBBoardPos(x, y) {
+    return (-boardWidth <= x && x <= boardWidth 
+        && -boardWidth <= y && y <= boardWidth
+        && Math.abs(x + y) <= boardWidth);
+}
+
+module.exports = {
+    POS,
+    validPBoardPos,
+    validBBoardPos,
+    boardWidth
+}
