@@ -19,7 +19,7 @@ class GAME_BOARD {
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
                     //Check for valid tile
-                    if (i != j && this.validBBoardPos(cur.pos.x + i, cur.pos.y + j)) {
+                    if (i != j && validBBoardPos(cur.pos.x + i, cur.pos.y + j)) {
                         let nbrPos = new POS(cur.pos.x + i, cur.pos.y + j);
 
                         //Creates the tile if it doesn't exist already then adds it as a neighbour

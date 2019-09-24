@@ -47,7 +47,7 @@ class POS {
 function validPBoardPos(x, y) {
     return (-5 <= y && y <= -3
         && 0 <= x && x <= 4
-        && x + y <= -1);     
+        && x + y <= -1);
 }
 
 function validBBoardPos(x, y) {

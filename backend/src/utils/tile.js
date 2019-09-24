@@ -1,4 +1,4 @@
-import POS from './pos.js';
+import { POS } from './pos.js';
 
 class TILE {
     constructor(x, y) {
