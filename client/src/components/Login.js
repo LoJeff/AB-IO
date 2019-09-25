@@ -32,7 +32,7 @@ class Login extends Component {
     }
 
     dummyFunction(){
-        // this.props.emitters.dummyFunction();
+        this.props.emitters.dummyFunction();
     }
 
     render(){
