@@ -4,12 +4,13 @@ import HASH from '../utils/hash.js'
 const benchSpace = 10;
 
 class UNIT_HOLDER {
-    constructor() {
+    constructor(maxUnits = 1) {
         this.bench = [];
         for (let i = 0; i < benchSpace; i++) {
-            bench[i] = null;
+            this.bench[i] = null;
         }
         this.board = new HASH();
+        this.maxUnits = maxUnits;
     }
 
     addUnit(type, id) {
@@ -27,10 +28,10 @@ class UNIT_HOLDER {
     }
 
     benchMove(unit, index) {
-        if (bench[index] == null) {
+        if (this.bench[index] == null) {
             this.board.del(unit.startPos);
             unit.startPos.nullXY();
-            bench[index] = unit;
+            this.bench[index] = unit;
             unit.benchIdx = index;
             return true
         } else {
@@ -50,10 +51,10 @@ class UNIT_HOLDER {
     }
 
     boardMove(unit, pos) {
-        if (this.board.get(pos) == undefined) {
+        if (this.board.get(pos) == undefined && Object.keys(this.board).length <= this.maxUnits) {
             this.board.push(pos, unit);
             unit.startPos = pos;
-            bench[unit.benchIdx] = null;
+            this.bench[unit.benchIdx] = null;
             unit.benchIdx = -1;
             return true
         } else {
