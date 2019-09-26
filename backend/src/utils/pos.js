@@ -11,6 +11,11 @@ class POS {
         this.y = y;
     }
 
+    setPos(pos) {
+        this.x = pos.x;
+        this.y = pos.y;
+    }
+
     nullXY() {
         this.x = null;
         this.y = null;
@@ -24,16 +29,36 @@ class POS {
         return new POS(Math.round(this.x), Math.round(this.y));
     }
 
-    rotateCW() {
-        let newX = -this.z();
-        this.y = -this.x;
-        this.x = newX;
-    }
-
-    rotateCCW() {
-        let newY = -this.z()
-        this.x = -this.y;
-        this.y = newY;
+    rotateCW(i = 0) {
+        i /= 6;
+        let newX;
+        switch(i) {
+            case 1:
+                newX = -this.z();
+                this.y = -this.x;
+                this.x = newX;
+            break;
+            case 2:
+                newX = this.y;
+                this.y = this.z();
+                this.x = newX;
+            break;
+            case 3:
+                this.y *= -1;
+                this.x *= -1;
+            break;
+            case 4:
+                newX = this.z();
+                this.y = this.x;
+                this.x = newX;
+            break;
+            case 5:
+                newX = -this.y;
+                this.y = -this.z();
+                this.x = newX;
+            break;
+            default:
+        }
     }
     
     validPBoardPos() {

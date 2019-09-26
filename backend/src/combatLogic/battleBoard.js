@@ -3,6 +3,7 @@ import PLAYER from '../player/player.js';
 import { POS, validBBoardPos, boardWidth } from '../utils/pos.js';
 import { TILE, TILE_GRAPH } from '../utils/tile.js';
 import HASH from '../utils/hash.js';
+import RAND from '../utils/rand.js';
 
 class GAME_BOARD {
     constructor() {
@@ -53,8 +54,10 @@ class GAME_BOARD {
                 let neighbour = cur.neighbours[index];
                 //Check if not visited
                 if (prevMap.get(neighbour.pos) == undefined) {
-                    //Push previous tile if the neighbouring tile is empty and not occupied or has an enemy on it
-                    if (!neighbour.occupied || neighbour.unit != null && neighbour.unit.playerId != unit.playerId) {
+                    //Push previous tile if the neighbouring tile is empty 
+                    //and not occupied or has an enemy on it
+                    if (!neighbour.occupied || neighbour.unit != null && 
+                        neighbour.unit.playerId != unit.playerId) {
                         prevMap.push(neighbour.pos, cur.pos);
                     }
                     //Check if the neighbouring tile has an enemy unit
@@ -118,6 +121,7 @@ class GAME_BOARD {
     }
 
     placeUnit(unit, pos) {
+        unit.curPos.setPos(pos);
         let tile = this.tiles.get(pos);
         console.log(unit);
         if (tile.unit == null) {
@@ -126,6 +130,27 @@ class GAME_BOARD {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    addPlayerUnits(players) {
+        var idxs = [...Array(players.length - 1).keys()];
+        RAND.aryShfl(idxs);
+        for (i in players) {
+            let units = players[i].unitHolder.board;
+            for (j in units) {
+                let initPos = new POS(unit.startPos.x, unit.startPos.y);
+                initPos.rotateCw(idxs[i]);
+                console.assert(this.placeUnit(units[j], initPos),
+                    "placing a second unit in the same hex for initialization");
+            }
+        } 
+    }
+
+    cleanBoard() {
+        for (i in this.tiles.graph) {
+            this.tiles.graph[i].occupied = false;
+            this.tiles.graph[i].unit = null;
         }
     }
 }

@@ -11,23 +11,23 @@ class TILE {
 
 class TILE_GRAPH {
     constructor() {
-        this.tiles = {};
+        this.graph = {};
     }
 
     push(tile) {
-        this.tiles[tile.pos.x + "," + tile.pos.y] = tile;
+        this.graph[tile.pos.x + "," + tile.pos.y] = tile;
     }
 
     get(pos) {
-        return this.tiles[pos.x + "," + pos.y];
+        return this.graph[pos.x + "," + pos.y];
     }
 
     del(pos) {
-        delete this.tiles[pos.x + "," + pos.y];
+        delete this.graph[pos.x + "," + pos.y];
     }
 
     log() {
-        const entries = Object.entries(this.tiles);
+        const entries = Object.entries(this.graph);
         // console.log(entries);
     }
 }
