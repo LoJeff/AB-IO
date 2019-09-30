@@ -39,7 +39,7 @@ class GAME_BOARD {
         this.tiles.log();
     }
 
-    enemyInRange(unit, found = new Set([]), src = null) {
+    enemyInRange(unit, src = null) {
         var queue = [];
         var srcTile;
         if (src == null) {
@@ -48,6 +48,7 @@ class GAME_BOARD {
             srcTile = src;
         }
         queue.push({tile: srcTile, dist: 0});
+        let found = new Set([]);
         found.add(srcTile);
         let cur = null;
         while (queue.length > 0) {
@@ -73,14 +74,13 @@ class GAME_BOARD {
         let srcRoundedPos = unit.curPos.roundedPos();
         queue.push(this.tiles.get(srcRoundedPos));
         let prevMap = new HASH();
-        let atkSearched = new Set();
         prevMap.push(srcRoundedPos, null);
         let found = null;
         let enemy = null;
         while (queue.length > 0) {
             let cur = queue.shift();
             //check if enemy is in range
-            enemy = this.enemyInRange(unit, atkSearched, cur);
+            enemy = this.enemyInRange(unit, cur);
             if (enemy != null) {
                 found = cur;
                 break;
