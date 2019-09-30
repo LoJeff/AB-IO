@@ -39,6 +39,94 @@ class GAME_BOARD {
         this.tiles.log();
     }
 
+    enemyInRange(unit, found = new Set([]), src = null) {
+        var queue = [];
+        var srcTile;
+        if (src == null) {
+            srcTile = this.tiles.get(unit.curPos.roundedPos());
+        } else {
+            srcTile = src;
+        }
+        queue.push({tile: srcTile, dist: 0});
+        found.add(srcTile);
+        let cur = null;
+        while (queue.length > 0) {
+            cur = queue.shift();
+            //Visit all neighbours of cur
+            for (var index in cur.tile.neighbours) {
+                let neighbour = cur.tile.neighbours[index];
+                if (found.has(neighbour)) continue;
+                if (neighbour.unit != null && neighbour.unit.playerId != unit.playerId) {
+                    return neighbour.unit;
+                } else if (cur.dist + 1 < unit.range) {
+                    queue.push({tile: neighbour, dist: cur.dist + 1});
+                    found.add(neighbour);
+                }
+            }
+        }
+        return null;
+    }
+
+    nearestEnemyMoveAtk(unit) {
+        //Using Dijkstra
+        var queue = [];
+        let srcRoundedPos = unit.curPos.roundedPos();
+        queue.push(this.tiles.get(srcRoundedPos));
+        let prevMap = new HASH();
+        let atkSearched = new Set();
+        prevMap.push(srcRoundedPos, null);
+        let found = null;
+        let enemy = null;
+        while (queue.length > 0) {
+            let cur = queue.shift();
+            //check if enemy is in range
+            enemy = this.enemyInRange(unit, atkSearched, cur);
+            if (enemy != null) {
+                found = cur;
+                break;
+            }
+            //Visit all neighbours of cur
+            for (var index in cur.neighbours) {
+                let neighbour = cur.neighbours[index];
+                //Check if not visited and not occupied
+                if (prevMap.get(neighbour.pos) == undefined && !neighbour.occupied) {
+                    //Push previous tile if the neighbouring tile is not occupied
+                    prevMap.push(neighbour.pos, cur.pos);
+                    queue.push(neighbour);
+                }
+            }
+        }
+        var path = [];
+        if (found != null && found != this.tiles.get(srcRoundedPos)) {
+            let cur = found.pos;
+            while (cur != null) {
+                path.unshift(cur);
+                cur = prevMap.get(cur);
+            }
+        }
+        return {path: path, enemy: enemy};
+    }
+
+    moveAtkUnit(unit) {
+        // Check if already moving
+        if (unit.moving()) return null;
+
+        var result = this.nearestEnemyMoveAtk(unit);
+        console.log("PATH: ");
+        for (var i in result.path) {
+            console.log(result.path[i]);
+        }
+        // Checking if the unit is already in range
+        if (result.path.length != 0) {
+            this.tiles.get(result.path[1]).occupied = true;
+            this.tiles.get(unit.curPos.roundedPos()).occupied = false;
+            unit.nextPos.setPos(result.path[1]);
+            return {atk: false, target: result.path[1]};
+        } else {
+            return {atk: true, target: result.enemy};
+        }
+    }
+    
     nearestEnemyPath(unit) {
         //Using Dijkstra
         var queue = [];
@@ -83,48 +171,24 @@ class GAME_BOARD {
     }
 
     moveUnit(unit) {
+        // Check if already moving
+        if (unit.moving()) return null;
         var path = this.nearestEnemyPath(unit);
         console.log("PATH: ");
         for (var i in path) {
             console.log(path[i]);
         }
-        // Checking if the unit is already in range
-        if (path.length > unit.range + 1) {
-            path[1].occupied = true;
-            this.tiles.get(unit.curPos.roundedPos()).occupied = false;
-            return path[1];
-        } else {
-            return null;
-        }
-    }
-
-    enemyInRange(unit) {
-        var queue = [];
-        var srcTile = this.tiles.get(unit.curPos.roundedPos());
-        queue.push({tile: srcTile, dist: 0});
-        var found = new Set([srcTile]);
-        let cur = null;
-        while (queue.length > 0) {
-            cur = queue.shift();
-            //Visit all neighbours of cur
-            for (var index in cur.tile.neighbours) {
-                let neighbour = cur.tile.neighbours[index];
-                if (neighbour.unit != null && neighbour.unit.playerId != unit.playerId) {
-                    return neighbour.unit;
-                } else if (cur.dist < unit.range && !found.has(neighbour)) {
-                    queue.push({tile: neighbour, dist: cur.dist + 1});
-                    found.add(neighbour);
-                }
-            }
-        }
-        return null;
+        this.tiles.get(path[1]).occupied = true;
+        this.tiles.get(unit.curPos.roundedPos()).occupied = false;
+        unit.nextPos.setPos(path[1]);
+        return path[1];
     }
 
     placeUnit(unit, pos) {
-        unit.curPos.setPos(pos);
         let tile = this.tiles.get(pos);
         console.log(unit);
-        if (tile.unit == null) {
+        if (tile.unit == null && !tile.occupied) {
+            unit.curPos.setPos(pos);
             tile.unit = unit;
             tile.occupied = true;
             return true;

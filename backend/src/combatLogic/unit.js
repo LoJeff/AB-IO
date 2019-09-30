@@ -9,12 +9,20 @@ class UNIT {
         this.benchIdx = -1;
         this.startPos = new POS();
         this.curPos = new POS();
-        this.nextPos = new POS(-1, -1);
+        this.nextPos = new POS();
 
         let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
         this.hp = unitInfo.hp;
         this.pDmg = unitInfo.pDmg;
         this.range = unitInfo.range;
+    }
+
+    moving() {
+        if (this.nextPos.x == null || this.nextPos.y == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 

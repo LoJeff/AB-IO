@@ -99,12 +99,16 @@ class connectionHandler{
 				var p1Unit = curGame.findPlayer(1).getUnitBench(0);
 				curGame.board.placeUnit(p0Unit, new POS(0, 0));
 				curGame.board.placeUnit(p1Unit, new POS(5, -3));
-				curGame.board.moveUnit(p0Unit);
+				var result = curGame.board.moveAtkUnit(p0Unit);
+				var result2 = curGame.board.moveUnit(p1Unit);
 
-				//curGame.board.logTiles();
-				console.log(curGame.findPlayer(0));
-				console.log(curGame.findPlayer(1));
-				console.log(curGame);
+				// curGame.board.logTiles();
+				// console.log(curGame.findPlayer(0));
+				// console.log(curGame.findPlayer(1));
+				// console.log(curGame);
+				console.log(result);
+				console.log(result2);
+				console.log("DONE");
 			} catch(err) {
 				console.log(err)
 			}
