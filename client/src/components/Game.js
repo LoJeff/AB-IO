@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import overall from './main.js';
 
 class Game extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ class Game extends Component {
 
     componentDidMount(){
         this.props.handlers.updateReact(this);
+		overall();
     }
 
     render(){
@@ -27,6 +29,7 @@ class Game extends Component {
                 <ul>
                     {packetList}
                 </ul>
+				<canvas id="canvas"></canvas>
             </div>
         );
     }
