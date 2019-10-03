@@ -51,6 +51,10 @@ class game {
 		var sendData = {"gameid": this.id, "time": date};
 		global.emitters.broadcast_gameUpdate(sendData);
 	}
+
+	playerToGameBoard() {
+		this.board.addPlayerUnits(this.players)
+	}
 }
 
 export default game;

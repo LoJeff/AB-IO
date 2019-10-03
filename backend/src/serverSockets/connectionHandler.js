@@ -92,22 +92,30 @@ class connectionHandler{
 				curGame.addPlayer(3, "jen");
 				curGame.addPlayer(4, "fred");
 				curGame.addPlayer(5, "sam");
-				console.log(curGame.findPlayer(0));
-				curGame.findPlayer(0).addUnit("warrior");
-				curGame.findPlayer(1).addUnit("warrior");
-				var p0Unit = curGame.findPlayer(0).getUnitBench(0);
-				var p1Unit = curGame.findPlayer(1).getUnitBench(0);
-				curGame.board.placeUnit(p0Unit, new POS(0, 0));
-				curGame.board.placeUnit(p1Unit, new POS(5, -3));
-				var result = curGame.board.moveAtkUnit(p0Unit);
-				var result2 = curGame.board.moveUnit(p1Unit);
+				var p0 = curGame.findPlayer(0);
+				var p1 = curGame.findPlayer(1);
+				var p2 = curGame.findPlayer(2);
+				var u00 = p0.addUnit("warrior");
+				var u01 = p0.addUnit("warrior");
+				var u10 = p1.addUnit("warrior");
+				var u11 = p1.addUnit("warrior");
+				var u20 = p2.addUnit("warrior");
+				var u21 = p2.addUnit("warrior");
+				p0.addXP(2);
+				p1.addXP(2);
+				p2.addXP(2);
+				p0.boardMove(p0.benchGet(0), new POS(0, -3));
+				p0.boardMove(p0.benchGet(1), new POS(2, -3));
+				p1.boardMove(p1.benchGet(0), new POS(1, -3));
+				p1.boardMove(p1.benchGet(1), new POS(2, -5));
+				p2.boardMove(p2.benchGet(0), new POS(2, -4));
+				p2.boardMove(p2.benchGet(1), new POS(2, -5));
+				curGame.playerToGameBoard();
 
-				// curGame.board.logTiles();
-				// console.log(curGame.findPlayer(0));
-				// console.log(curGame.findPlayer(1));
-				// console.log(curGame);
-				console.log(result);
-				console.log(result2);
+				console.log(p0.unitHolder);
+				console.log(p1.unitHolder);
+				console.log(p2.unitHolder);
+				curGame.board.logTiles();
 				console.log("DONE");
 			} catch(err) {
 				console.log(err)

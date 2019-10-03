@@ -23,12 +23,33 @@ class PLAYER {
         this.unitHolder = new UNIT_HOLDER(this.lvl);
     }
 
+    // unitHolder functions
     addUnit(type) {
-        this.unitHolder.addUnit(type, this.id);
+        return this.unitHolder.addUnit(type, this.id);
     }
 
-    getUnitBench(index) {
+    benchGet(index) {
         return this.unitHolder.benchGet(index);
+    }
+
+    benchMove(unit, index) {
+        return this.unitHolder.benchMove(unit, index);
+    }
+
+    benchRmv(index) {
+        return this.unitHolder.benchRmv(index);
+    }
+
+    boardGet(pos) {
+        return this.unitHolder.boardGet(pos);
+    }
+
+    boardMove(unit, pos) {
+        return this.unitHolder.boardMove(unit, pos);
+    }
+
+    boardRmv(pos) {
+        return this.unitHolder.boardRmv(pos);
     }
 
     addXP(xp) {

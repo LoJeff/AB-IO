@@ -22,7 +22,7 @@ class POS {
     }
 
     z() {
-        return -(x+y);
+        return -(this.x+this.y);
     }
 
     roundedPos() {
@@ -30,7 +30,7 @@ class POS {
     }
 
     rotateCW(i = 0) {
-        i /= 6;
+        i %= 6;
         let newX;
         switch(i) {
             case 1:

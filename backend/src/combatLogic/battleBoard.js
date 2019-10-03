@@ -35,8 +35,19 @@ class GAME_BOARD {
         }
     }
 
-    logTiles() {
+    dumpTiles() {
         this.tiles.log();
+    }
+
+    logTiles() {
+        console.log("START TILE LOG:");
+        let graph = this.tiles.graph;
+        for (let i in graph) {
+            if (graph[i].unit != null) {
+                console.log(graph[i]);
+            }
+        }
+        console.log("END TILE LOG")
     }
 
     enemyInRange(unit, src = null) {
@@ -186,7 +197,6 @@ class GAME_BOARD {
 
     placeUnit(unit, pos) {
         let tile = this.tiles.get(pos);
-        console.log(unit);
         if (tile.unit == null && !tile.occupied) {
             unit.curPos.setPos(pos);
             tile.unit = unit;
@@ -200,11 +210,11 @@ class GAME_BOARD {
     addPlayerUnits(players) {
         var idxs = [...Array(players.length - 1).keys()];
         RAND.aryShfl(idxs);
-        for (i in players) {
-            let units = players[i].unitHolder.board;
-            for (j in units) {
-                let initPos = new POS(unit.startPos.x, unit.startPos.y);
-                initPos.rotateCw(idxs[i]);
+        for (let i in players) {
+            let units = players[i].unitHolder.board.hash;
+            for (let j in units) {
+                let initPos = new POS(units[j].startPos.x, units[j].startPos.y);
+                initPos.rotateCW(parseInt(idxs[i]));
                 console.assert(this.placeUnit(units[j], initPos),
                     "placing a second unit in the same hex for initialization");
             }

@@ -17,9 +17,10 @@ class UNIT_HOLDER {
         var emptyIdx = this.bench.findIndex( (unit) => unit == null);
         if (emptyIdx != -1) {
             this.bench[emptyIdx] = new UNIT(type, id)
-            return true;
+            this.bench[emptyIdx].benchIdx = emptyIdx;
+            return this.bench[emptyIdx];
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -51,11 +52,14 @@ class UNIT_HOLDER {
     }
 
     boardMove(unit, pos) {
-        if (this.board.get(pos) == undefined && Object.keys(this.board).length <= this.maxUnits) {
+        if (this.board.get(pos) == undefined && Object.keys(this.board.hash).length < this.maxUnits
+            && pos.validPBoardPos()) {
             this.board.push(pos, unit);
             unit.startPos = pos;
-            this.bench[unit.benchIdx] = null;
-            unit.benchIdx = -1;
+            if (unit.benchIdx != -1) {
+                this.bench[unit.benchIdx] = null;
+                unit.benchIdx = -1;
+            } 
             return true
         } else {
             return false
