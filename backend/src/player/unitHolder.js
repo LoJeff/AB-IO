@@ -31,7 +31,7 @@ class UNIT_HOLDER {
     benchMove(unit, index) {
         if (this.bench[index] == null) {
             this.board.del(unit.startPos);
-            unit.startPos.nullXY();
+            unit.startPos.empty();
             this.bench[index] = unit;
             unit.benchIdx = index;
             return true
@@ -69,7 +69,7 @@ class UNIT_HOLDER {
     boardRmv(pos) {
         var unit = this.board.get(pos);
         this.board.del(pos);
-        unit.startPos.nullXY();
+        unit.startPos.empty();
         return unit;
     }
 }

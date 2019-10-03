@@ -1,4 +1,5 @@
 import { POS } from '../utils/pos.js';
+
 import UNIT_TYPES from './unitTypes/unitType.js';
 
 class UNIT {
@@ -10,6 +11,8 @@ class UNIT {
         this.startPos = new POS();
         this.curPos = new POS();
         this.nextPos = new POS();
+        this.target = null;
+        this.tick = 0;
 
         let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
         this.hp = unitInfo.hp;
@@ -17,12 +20,11 @@ class UNIT {
         this.range = unitInfo.range;
     }
 
-    moving() {
-        if (this.nextPos.x == null || this.nextPos.y == null) {
-            return false;
-        } else {
-            return true;
-        }
+    resetStats() {
+        let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
+        this.hp = unitInfo.hp;
+        this.pDmg = unitInfo.pDmg;
+        this.range = unitInfo.range;
     }
 }
 

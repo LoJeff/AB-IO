@@ -16,7 +16,7 @@ class POS {
         this.y = pos.y;
     }
 
-    nullXY() {
+    empty() {
         this.x = null;
         this.y = null;
     }
@@ -25,8 +25,25 @@ class POS {
         return -(this.x+this.y);
     }
 
+    isEmpty() {
+        return (this.x != null && this.y != null);
+    }
+
+    isFloat() {
+        return (this.x % 1 != 0 && this.y % 1 != 0);
+    }
+
+    isHalfway() {
+        return (this.x % 1 == 0.5 && this.y % 0.5 == 0.5);
+    }
+
     roundedPos() {
         return new POS(Math.round(this.x), Math.round(this.y));
+    }
+
+    stepTowards(dest, stepSize) {
+        this.x += stepSize * Math.sign(dest.x - this.x);
+        this.y += stepSize * Math.sign(dest.y - this.y);
     }
 
     rotateCW(i = 0) {
