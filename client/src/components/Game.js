@@ -13,7 +13,7 @@ class Game extends Component {
 
     componentDidMount(){
         this.props.handlers.updateReact(this);
-		overall();
+        overall();
     }
 
     render(){
