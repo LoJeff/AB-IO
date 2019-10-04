@@ -28,6 +28,10 @@ class PLAYER {
         return this.unitHolder.addUnit(type, this.id);
     }
 
+    bench() {
+        return this.unitHolder.bench;
+    }
+
     benchGet(index) {
         return this.unitHolder.benchGet(index);
     }
@@ -38,6 +42,10 @@ class PLAYER {
 
     benchRmv(index) {
         return this.unitHolder.benchRmv(index);
+    }
+
+    board() {
+        return this.unitHolder.board.hash;
     }
 
     boardGet(pos) {

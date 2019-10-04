@@ -47,7 +47,7 @@ class GAME_BOARD {
         console.log("START TILE LOG:");
         let graph = this.tiles.graph;
         for (let i in graph) {
-            if (graph[i].unit != null) {
+            if (graph[i].unit != null || graph[i].occupied) {
                 console.log(graph[i]);
             }
         }
@@ -94,17 +94,18 @@ class GAME_BOARD {
     // Battle Update Functions //
 
     updateTile(unit) {
-        console.assert(this.tiles.get(nextPos).unit == null,
-            "Error: attempting to move into a tile with a unit\n%o", this.tiles.get(nextPos));
+        console.assert(this.tiles.get(unit.nextPos).unit == null,
+            "Error: attempting to move into a tile with a unit\n%o", this.tiles.get(unit.nextPos));
         var origPos = new POS();
         origPos.setPos(unit.nextPos);
-        origPos.x += unit.nextPos.x - unit.curPos.x;
-        origPos.y += unit.nextPos.y - unit.curPos.y;
+        origPos.x += Math.sign(unit.curPos.x - unit.nextPos.x);
+        origPos.y += Math.sign(unit.curPos.y - unit.nextPos.y);
         origPos = origPos.roundedPos();
+        console.log(origPos);
         var origTile = this.tiles.get(origPos);
         console.assert(origTile.unit === unit,
-            "Error: updating wrong tile for unit\nunit1: %o\nunit2:", origTile.unit, unit);
-        this.tiles.get(nextPos).unit = origTile.unit;
+            "Error: updating wrong tile for unit\nunit1: %o\nunit2: %o", origTile.unit, unit);
+        this.tiles.get(unit.nextPos).unit = origTile.unit;
         origTile.unit = null;
     }
 
@@ -209,13 +210,13 @@ class GAME_BOARD {
 
     moveAtkUnit(unit) {
         // Check if already moving
-        if (unit.moving()) return null;
+        if (unit.curPos.isFloat()) return null;
 
         var result = this.nearestEnemyMoveAtk(unit);
-        console.log("PATH: ");
-        for (var i in result.path) {
-            console.log(result.path[i]);
-        }
+        // console.log("PATH: ");
+        // for (var i in result.path) {
+        //     console.log(result.path[i]);
+        // }
         // Checking if the unit is already in range
         if (result.path.length != 0) {
             this.tiles.get(result.path[1]).occupied = true;
@@ -290,7 +291,4 @@ class GAME_BOARD {
     }
 }
 
-module.exports = {
-    GAME_BOARD,
-    boardWidth
-}
+export default GAME_BOARD

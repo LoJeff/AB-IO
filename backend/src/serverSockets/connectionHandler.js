@@ -1,6 +1,8 @@
 import globalData from "../globalData.js";
 import { POS } from '../utils/pos.js';
 
+import UNITSTATE from '../combatLogic/unitState.js';
+
 // This class handles all the game connections socket handlers
 class connectionHandler{
 	constructor(server,client){
@@ -79,36 +81,53 @@ class connectionHandler{
 		}.bind(this));
 		client.on("dummyFunction",function(data){
 			try {
-				let gameID = global.data.createNewGame("test");
-				if (gameID != -1) {
-					console.log("Created game with id: " + gameID);
-				} else {
-					console.log("Failed to create game");
+				if (true) {
+					let gameID = global.data.createNewGame("test");
+					if (gameID != -1) {
+						console.log("Created game with id: " + gameID);
+					} else {
+						console.log("Failed to create game");
+					}
+					let curGame = global.data.gameArray[0];
+					curGame.addPlayer(0, "bob");
+					curGame.addPlayer(1, "amy");
+					curGame.addPlayer(2, "joe");
+					curGame.addPlayer(3, "jen");
+					curGame.addPlayer(4, "fred");
+					curGame.addPlayer(5, "sam");
+					var p0 = curGame.findPlayer(0);
+					var p1 = curGame.findPlayer(1);
+					var u00 = p0.addUnit("warrior");
+					var u01 = p0.addUnit("warrior");
+					var u10 = p1.addUnit("warrior");
+					var u11 = p1.addUnit("warrior");
+					p0.addXP(2);
+					p1.addXP(2);
+					p0.boardMove(p0.benchGet(0), new POS(0, -3));
+					p1.boardMove(p1.benchGet(0), new POS(1, -3));
+					curGame.playerToGameBoard();
+	
+					// console.log(p0.unitHolder);
+					// console.log(p1.unitHolder);
+					// curGame.board.logTiles();
+					
+					var state = UNITSTATE.idle;
+					var p0board = p0.board();
+					console.log("INIT:")
+					curGame.board.logTiles();
+					console.log(Object.values(p0board));
+					let i = 5;
+					do {
+						for (const unit of Object.values(p0board)) {
+							state = curGame.board.updateUnit(unit);
+						}
+						console.log(u00);
+						//i--;
+					} while (state != UNITSTATE.atk && i > 0);
+					console.log("FINAL:")
+					curGame.board.logTiles();
+					console.log("DONE");
 				}
-				let curGame = global.data.gameArray[0];
-				curGame.addPlayer(0, "bob");
-				curGame.addPlayer(1, "amy");
-				curGame.addPlayer(2, "joe");
-				curGame.addPlayer(3, "jen");
-				curGame.addPlayer(4, "fred");
-				curGame.addPlayer(5, "sam");
-				var p0 = curGame.findPlayer(0);
-				var p1 = curGame.findPlayer(1);
-				var u00 = p0.addUnit("warrior");
-				var u01 = p0.addUnit("warrior");
-				var u10 = p1.addUnit("warrior");
-				var u11 = p1.addUnit("warrior");
-				p0.addXP(2);
-				p1.addXP(2);
-				p0.boardMove(p0.benchGet(0), new POS(0, -3));
-				p1.boardMove(p1.benchGet(0), new POS(1, -3));
-				curGame.playerToGameBoard();
-
-				console.log(p0.unitHolder);
-				console.log(p1.unitHolder);
-				curGame.board.logTiles();
-				
-				console.log("DONE");
 			} catch(err) {
 				console.log(err)
 			}

@@ -1,4 +1,4 @@
-import { GAME_BOARD } from "./combatLogic/battleBoard.js";
+import GAME_BOARD from "./combatLogic/battleBoard.js";
 import PLAYER from "./player/player.js";
 
 class game {

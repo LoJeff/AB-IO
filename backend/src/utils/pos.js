@@ -26,15 +26,17 @@ class POS {
     }
 
     isEmpty() {
-        return (this.x != null && this.y != null);
+        return (this.x == null && this.y == null);
     }
 
     isFloat() {
-        return (this.x % 1 != 0 && this.y % 1 != 0);
+        return (this.x % 1 != 0 || this.y % 1 != 0);
     }
 
     isHalfway() {
-        return (this.x % 1 == 0.5 && this.y % 0.5 == 0.5);
+        console.log(Math.abs(this.x % 1));
+        console.log(Math.abs(this.y % 1 == 0.5));
+        return (Math.abs(this.x % 1) == 0.5 || Math.abs(this.y % 1) == 0.5);
     }
 
     roundedPos() {
@@ -44,6 +46,8 @@ class POS {
     stepTowards(dest, stepSize) {
         this.x += stepSize * Math.sign(dest.x - this.x);
         this.y += stepSize * Math.sign(dest.y - this.y);
+        this.x = Math.round(this.x * 10) / 10;
+        this.y = Math.round(this.y * 10) / 10;
     }
 
     rotateCW(i = 0) {
