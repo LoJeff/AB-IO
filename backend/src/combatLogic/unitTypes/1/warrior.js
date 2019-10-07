@@ -6,6 +6,7 @@ class WARRIOR {
             {hp: 200, pDmg: 50, range: 1},
             {hp: 400, pDmg: 100, range: 1}        
         ];
+        this.cost = 1;
     }
 }
 
