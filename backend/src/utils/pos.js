@@ -34,8 +34,6 @@ class POS {
     }
 
     isHalfway() {
-        console.log(Math.abs(this.x % 1));
-        console.log(Math.abs(this.y % 1 == 0.5));
         return (Math.abs(this.x % 1) == 0.5 || Math.abs(this.y % 1) == 0.5);
     }
 

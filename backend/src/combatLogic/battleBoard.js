@@ -5,7 +5,7 @@ import { TILE, TILE_GRAPH } from '../utils/tile.js';
 import HASH from '../utils/hash.js';
 import RAND from '../utils/rand.js';
 
-import UNITSTATE from './unitState.js';
+import UNIT_STATE from './unitState.js';
 
 class GAME_BOARD {
     constructor() {
@@ -35,6 +35,9 @@ class GAME_BOARD {
                 }
             }
         }
+
+        this.units = [];
+        this.rank = {};
     }
 
 
@@ -52,43 +55,6 @@ class GAME_BOARD {
             }
         }
         console.log("END TILE LOG")
-    }
-
-    // Battle Start Functions //
-
-    placeUnit(unit, pos) {
-        let tile = this.tiles.get(pos);
-        if (tile.unit == null && !tile.occupied) {
-            unit.curPos.setPos(pos);
-            tile.unit = unit;
-            tile.occupied = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    addPlayerUnits(players) {
-        var idxs = [...Array(players.length - 1).keys()];
-        RAND.aryShfl(idxs);
-        for (let i in players) {
-            let units = players[i].unitHolder.board.hash;
-            for (let j in units) {
-                let initPos = new POS(units[j].startPos.x, units[j].startPos.y);
-                initPos.rotateCW(parseInt(idxs[i]));
-                console.assert(this.placeUnit(units[j], initPos),
-                    "Error: placing a second unit in the same hex for initialization");
-            }
-        } 
-    }
-
-    // Battle End Functions //
-
-    cleanBoard() {
-        for (i in this.tiles.graph) {
-            this.tiles.graph[i].occupied = false;
-            this.tiles.graph[i].unit = null;
-        }
     }
 
     // Battle Update Functions //
@@ -110,7 +76,7 @@ class GAME_BOARD {
     }
 
     updateUnit(unit) {
-        if (unit.hp <= 0) return UNITSTATE.dead;// Unit is dead
+        if (unit.hp <= 0) return UNIT_STATE.dead;// Unit is dead
 
         if (!unit.nextPos.isEmpty()) {// Unit currently has a destination to move to
             unit.curPos.stepTowards(unit.nextPos, 0.1);
@@ -119,19 +85,20 @@ class GAME_BOARD {
             } else if (!unit.curPos.isFloat()) {// Unit is done moving
                 unit.nextPos.empty();
             }
-            return UNITSTATE.move;
+            return UNIT_STATE.move;
         } else if (unit.target != null) {// Unit currently has a target to attack
             unit.tick--;
             if (unit.tick == 0) {
                 unit.target.hp -= unit.pDmg;
-                if (unit.target.hp < 0) unit.target.hp = 0;
-                unit.target == null;
+                console.log("OMG: " + unit.target);
+                if (unit.target.hp < 0) {unit.target.hp = 0};
+                unit.target = null;
             }
-            return UNITSTATE.atk;
+            return UNIT_STATE.atk;
         } else {// Unit is currently idle on a tile ready to make a next move
             let nextMove = this.moveAtkUnit(unit);
             console.assert(nextMove.state, "Error: unknown unit state");
-            if (nextMove.state == UNITSTATE.atk) {
+            if (nextMove.state == UNIT_STATE.atk) {
                 unit.tick = 9;
             }
             return nextMove.state;
@@ -222,12 +189,12 @@ class GAME_BOARD {
             this.tiles.get(result.path[1]).occupied = true;
             this.tiles.get(unit.curPos.roundedPos()).occupied = false;
             unit.nextPos.setPos(result.path[1]);
-            return {state: UNITSTATE.move, target: result.path[1]};
+            return {state: UNIT_STATE.move, target: result.path[1]};
         } else if (result.enemy != null) {
             unit.target = result.enemy;
-            return {state: UNITSTATE.atk, target: result.enemy};
+            return {state: UNIT_STATE.atk, target: result.enemy};
         } else {
-            return {state: UNITSTATE.idle, target: null};
+            return {state: UNIT_STATE.idle, target: null};
         }
     }
     
@@ -288,6 +255,84 @@ class GAME_BOARD {
         this.tiles.get(unit.curPos.roundedPos()).occupied = false;
         unit.nextPos.setPos(path[1]);
         return path[1];
+    }
+
+    // Main Battle Functions //
+
+    battleUpdate(players) {
+        // Shuffle order of which unit moves are determined
+        var idxs = [...Array(this.units.length).keys()];
+        RAND.aryShfl(idxs);
+        var packets = [];
+        var packet = {};
+		for (const i of idxs) {
+            packet.state = this.updateUnit(this.units[i]);
+            packet.unit = this.units[i];
+            packets[i] = packet;
+            console.log(packet);
+        }
+
+        // Check if any of the players have no more units and rank accordingly
+        let curRank = players.length - Object.keys(this.rank).length
+        for (let player of players) {
+            if (!Object.keys(this.rank).includes(player.id.toString()) && player.unitsDead()) {
+                this.rank[player.id] = curRank;
+            }
+        }
+
+        // Check if only one person left behind and assign first place
+        if (players.length == (Object.keys(this.rank).length + 1)) {
+            for (let player of players) {
+                if (!Object.keys(this.rank).includes(player.id.toString())) {
+                    console.assert(!player.unitsDead(), 
+                        "Error: last player has no surviving units\nUnitHolder: %o", player.unitHolder);
+                    this.rank[player.id] = 1;
+                }
+            }
+        }
+
+        return { packet: packets, rank: this.rank };
+    }
+    
+    // Battle Start Functions //
+
+    placeUnit(unit, pos) {
+        let tile = this.tiles.get(pos);
+        if (tile.unit == null && !tile.occupied) {
+            unit.curPos.setPos(pos);
+            tile.unit = unit;
+            tile.occupied = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    addPlayerUnits(players) {
+        var idxs = [...Array(players.length).keys()];
+        RAND.aryShfl(idxs);
+        for (let i in players) {
+            let units = players[i].unitHolder.board.hash;
+            for (let j in units) {
+                let initPos = new POS(units[j].startPos.x, units[j].startPos.y);
+                initPos.rotateCW(parseInt(idxs[i]));
+                console.assert(this.placeUnit(units[j], initPos),
+                    "Error: placing a second unit in the same hex for initialization");
+                this.units.push(units[j]);
+            }
+        }
+        return idxs;
+    }
+
+    // Battle End Functions //
+
+    cleanBoard() {
+        for (i in this.tiles.graph) {
+            this.tiles.graph[i].occupied = false;
+            this.tiles.graph[i].unit = null;
+        }
+        this.units.length = 0;
+        this.rank = {};
     }
 }
 

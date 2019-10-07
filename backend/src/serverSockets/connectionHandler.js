@@ -1,7 +1,7 @@
 import globalData from "../globalData.js";
 import { POS } from '../utils/pos.js';
 
-import UNITSTATE from '../combatLogic/unitState.js';
+import UNIT_STATE from '../combatLogic/unitState.js';
 
 // This class handles all the game connections socket handlers
 class connectionHandler{
@@ -105,28 +105,28 @@ class connectionHandler{
 					p1.addXP(2);
 					p0.boardMove(p0.benchGet(0), new POS(0, -3));
 					p1.boardMove(p1.benchGet(0), new POS(1, -3));
-					curGame.playerToGameBoard();
+					var idxs = curGame.playerToGameBoard();
 	
 					// console.log(p0.unitHolder);
 					// console.log(p1.unitHolder);
 					// curGame.board.logTiles();
 					
-					var state = UNITSTATE.idle;
 					var p0board = p0.board();
 					console.log("INIT:")
 					curGame.board.logTiles();
 					console.log(Object.values(p0board));
-					let i = 5;
+					var result;
+					var i = 100;
 					do {
-						for (const unit of Object.values(p0board)) {
-							state = curGame.board.updateUnit(unit);
-						}
-						console.log(u00);
-						//i--;
-					} while (state != UNITSTATE.atk && i > 0);
+						console.log("COUNTDOWN: " + i);
+						result = curGame.battleUpdate();
+						console.log(result);
+						i--;
+					} while (!result.end && i > 0);
 					console.log("FINAL:")
 					curGame.board.logTiles();
 					console.log("DONE");
+					console.log(idxs);
 				}
 			} catch(err) {
 				console.log(err)

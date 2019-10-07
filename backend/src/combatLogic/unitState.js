@@ -1,4 +1,4 @@
-const UNITSTATE = {
+const UNIT_STATE = {
     idle: 1,
     move: 2,
     atk: 3,
@@ -6,4 +6,4 @@ const UNITSTATE = {
     dead: 5
 }
 
-export default UNITSTATE;
+export default UNIT_STATE;

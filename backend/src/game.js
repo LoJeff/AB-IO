@@ -53,7 +53,16 @@ class game {
 	}
 
 	playerToGameBoard() {
-		this.board.addPlayerUnits(this.players)
+		return this.board.addPlayerUnits(this.players);
+	}
+
+	battleUpdate() {
+		var data = this.board.battleUpdate(this.players);
+		if (Object.keys(data.rank).length == this.players.length) {
+			return { end: true, data: data };
+		} else {
+			return { end: false, data: data };
+		}
 	}
 }
 

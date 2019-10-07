@@ -23,7 +23,7 @@ class PLAYER {
         this.unitHolder = new UNIT_HOLDER(this.lvl);
     }
 
-    // unitHolder functions
+    // unitHolder Accessor Functions //
     addUnit(type) {
         return this.unitHolder.addUnit(type, this.id);
     }
@@ -60,6 +60,8 @@ class PLAYER {
         return this.unitHolder.boardRmv(pos);
     }
 
+    // Leveling Functions //
+
     addXP(xp) {
         if (this.lvl < maxLvl) {
             this.xp += xp;
@@ -69,6 +71,20 @@ class PLAYER {
             this.lvl++;
         }
         this.unitHolder.maxUnits = this.lvl;
+    }
+
+    // Battle Functions //
+
+    unitsDead() {
+        var allDead = true;
+
+        for (const unit of Object.values(this.board())) {
+            if (unit.hp > 0) {
+                allDead = false;
+                break;
+            }
+        }
+        return allDead;
     }
 }
 
