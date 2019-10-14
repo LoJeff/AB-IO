@@ -45,17 +45,19 @@ class Login extends Component {
 				<div id="interactive_set">
 					<div className="row_of_input">
 						<div id="IGN_input_container">
-							<form > <input type="text" id="name" placeholder="Enter your IGN" /></form>
+							<form > <input className="fancyInput" type="text" id="name" placeholder="Enter your IGN" /></form>
 						</div>
 						<div id="Game_ID_input_container">
-							<form > <input type="text" id="gameid" placeholder="Enter your game lobby ID"/> </form>
+							<form >
+                                <input className="fancyInput" type="text" id="gameid" placeholder="Enter your game lobby ID"/>
+                            </form>
 						</div>
 					</div>
 					
 					<div id="submit_button_container">
-						<button type="button" onClick={this.joinGameRoom}>Submit</button>
+						<button className="popButton" type="button" onClick={this.joinGameRoom}>Submit</button>
 					</div>
-                    <button onClick={this.dummyFunction}>Jeff's button</button>
+                    <button className="popButton" onClick={this.dummyFunction}>Jeff's button</button>
 				</div>
             </div>
         );

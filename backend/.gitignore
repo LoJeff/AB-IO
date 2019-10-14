@@ -3,3 +3,8 @@
 
 # babel build
 /build
+
+# MongoDb data
+/src/data/*
+!/src/data/README
+!/src/data/db_init.js

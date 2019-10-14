@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "babel src -d build",
+    "db_init": "node src/data/db_init.js",
     "start": "npm run build && node build/server.js"
   },
   "repository": {
@@ -18,7 +19,9 @@
   },
   "homepage": "https://github.com/LoJeff/AB-IO#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "mongodb": "^3.3.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {

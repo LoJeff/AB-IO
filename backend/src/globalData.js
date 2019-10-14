@@ -1,10 +1,12 @@
 import game from './game.js';
+import database from './database.js';
 
 class globalData {
 	constructor(){
 		this.gameArray = [];
 		this.maxGames = 10;
 		this.serverTickRate = 1;
+		this.mongoDB = new database();
 	}
 
 	createNewGame(gameid){
@@ -13,6 +15,7 @@ class globalData {
 
 		if (this.gameArray.length < this.maxGames) {
 			this.gameArray.push(newGame);
+			this.mongoDB.insertNewGame(gameid);
 			return this.gameArray.length - 1;
 		} else {
 			return -1;

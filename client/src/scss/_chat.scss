@@ -1,0 +1,89 @@
+#chat {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    * {
+        font-family: Roboto;
+        font-size: 14px;
+    }
+    .chat__Header{
+        height: 40px;
+        width: 100%;
+        background-color: #2980b9;
+        p {
+            position: relative;
+            text-align: center;
+            color: white;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 500;
+            font-size: 15px;
+        }
+    }
+    .chat__messageWrapper{
+        height: 100%;
+        width: 100%;
+        overflow-y: scroll;
+
+        .chat__messageList{
+            list-style: none;
+            width: calc(100% - 10px);
+            margin-top: 5px;
+            padding-left: 5px;
+
+            .chat__serverAnnouncement {
+                width: 100%;
+                font-style: italic;
+                font-weight: bold;
+                color: #2980b9;
+                padding-top: 1px;
+                padding-bottom: 1px;
+
+                word-break: break-all;
+            }
+            .chat__chatMessage {
+                width: 100%;
+                padding-top: 1px;
+                padding-bottom: 1px;
+
+                word-break: break-all;
+            }
+        }
+    }
+    .chat__form{
+        display: flex;
+        flex-direction: row;
+        border: none;
+        border-top: 1px solid lightgrey;
+        .chat__input{
+            height: 25px;
+            flex: 1;
+            padding: 5px;
+            &:focus{
+                outline: none;
+            }  
+        }
+        .chat__submit{
+            background-color: transparent;
+            padding-right: 10px;
+            padding-left: 5px;
+            color: #3498db;
+            svg {
+                font-size: 15px;
+            }
+            &:hover{
+                cursor: pointer;
+            }
+            &:focus{
+                outline: none;
+            }  
+        }
+    }
+}
+

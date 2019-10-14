@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import io from 'socket.io-client';
 import connectionEmitter from "../clientSockets/connectionEmitter.js";
 import connectionHandler from "../clientSockets/connectionHandler.js";
-import "../css/login_page_styles.css";
 
 // Component imports
 import Login from './Login.js';
