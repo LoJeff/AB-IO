@@ -1,0 +1,18 @@
+The data folder contains the location where MongoDB stores the data.
+
+To start up mongoDB database:
+	mongod --port 27017 --dbpath="<path_to_this_folder>"
+	i.e. mongod --port 27017 --dbpath=".\backend\src\data"
+
+To open the mongo shell:
+	mongo
+
+To initialize the DB run:
+	npm run db_init
+
+helpful shell commands:
+
+help
+show dbs
+show collections
+

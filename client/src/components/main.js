@@ -15,5 +15,8 @@ export default function overall(){
 
 	//draw_hex(300, 300, context, 100, "#000000");
 	//19.05 * radius = screen height
-	view.draw_field_layout(screen_width/2, screen_height/2, screen_height/19.2, context, "#000000");
+	
+	var field_drawer = new view.field_drawer(context, main_canvas);
+	field_drawer.set_radius(screen_height/19.2);
+	field_drawer.draw_field_layout( "#000000");
 }

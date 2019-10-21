@@ -9,6 +9,15 @@ class connectionEmitter{
 		this.server.to(data.gameid).emit("updateRoomPlayers",sendData);
 	}
 
+	broadcast_chatUpdate(data){
+		var sendData = {
+			from: data.from,
+			content: data.content,
+			type: data.type
+		};
+		this.server.to(data.gameid).emit("updateChat",sendData);
+	}
+
 	broadcast_gameUpdate(data){
 		// console.log("sending update to", data.gameid);
 		var sendData = {"time": data.time};

@@ -29,6 +29,17 @@ class connectionHandler{
 			var playersList = global.data.findGame(data.gameid).getPlayersList();
 			var broadcastData = {"gameid":data.gameid,"playersList":playersList};
 			global.emitters.broadcast_updateRoomPlayers(broadcastData);	
+
+			// broadcast chat message that a new player has joined
+			var chatMessage = data.name + " has joined the room!"
+			var chatData = {gameid: data.gameid, from: "server", content: chatMessage, type:"serverAnnouncement"};
+
+			global.data.mongoDB.insertChatMessage(data.gameid, "server", chatMessage, "serverAnnouncement").catch(function(err){
+				console.log("Error:", err);
+			}).finally(function(results){
+				global.emitters.broadcast_chatUpdate(chatData);	
+			});
+			
 		} else{
 			// throw an error, max players reached in this game room
 		}

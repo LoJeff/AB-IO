@@ -1,3 +1,14 @@
+@import "chat";
+@import "login";
+@import "button";
+@import "textbox";
+
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -5,9 +16,14 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-image: url("../images/Submit_Page_Background.png");
+  min-width:900px;
+  min-height:500px;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
