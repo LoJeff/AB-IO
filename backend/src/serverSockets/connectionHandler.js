@@ -97,15 +97,18 @@ class connectionHandler{
 					curGame.addPlayer(5, "sam");
 					var p0 = curGame.findPlayer(0);
 					var p1 = curGame.findPlayer(1);
-					var u00 = p0.addUnit("warrior");
-					var u01 = p0.addUnit("warrior");
-					var u10 = p1.addUnit("warrior");
-					var u11 = p1.addUnit("warrior");
+					for (let i = 0; i < 10; i++) {
+						p0.addUnit("warrior");
+					}
+					for (let i = 0; i < 10; i++) {
+						p1.addUnit("warrior");
+					}
 					p0.addXP(2);
 					p1.addXP(2);
 					p0.boardMove(p0.benchGet(0), new POS(0, -3));
 					p1.boardMove(p1.benchGet(0), new POS(1, -3));
 					var idxs = curGame.playerToGameBoard();
+					console.log(idxs);
 	
 					// console.log(p0.unitHolder);
 					// console.log(p1.unitHolder);
@@ -114,16 +117,23 @@ class connectionHandler{
 					var p0board = p0.board();
 					console.log("INIT:")
 					curGame.board.logTiles();
+					console.log("\n");
 					console.log(Object.values(p0board));
+					console.log("\n");
 					var result;
 					var i = 100;
 					do {
 						console.log("COUNTDOWN: " + i);
 						result = curGame.battleUpdate();
 						console.log(result);
+						console.log("\n");
 						i--;
 					} while (!result.end && i > 0);
-					console.log("FINAL:")
+					console.log("FINAL:");
+					curGame.board.logTiles();
+					console.log(result.data);
+					console.log("\n");
+					curGame.battleClean();
 					curGame.board.logTiles();
 					console.log("DONE");
 					console.log(idxs);

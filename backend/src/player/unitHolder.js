@@ -13,15 +13,55 @@ class UNIT_HOLDER {
         this.maxUnits = maxUnits;
     }
 
-    addUnit(type, id) {
+    addUnit(type, playerId) {
+        var lvlUpUnit = this.checkUpgrade(type);
+        if (lvlUpUnit != null) {
+            return lvlUpUnit;
+        }
         var emptyIdx = this.bench.findIndex( (unit) => unit == null);
         if (emptyIdx != -1) {
-            this.bench[emptyIdx] = new UNIT(type, id)
+            this.bench[emptyIdx] = new UNIT(type, playerId)
             this.bench[emptyIdx].benchIdx = emptyIdx;
             return this.bench[emptyIdx];
         } else {
             return null;
         }
+    }
+
+    checkUpgrade(type) {
+        var numLvl = [[], [], []];
+        var delUnits;
+        // Finding all occurences of a specific type of unit that the player owns
+        for (const unit in Object.values(this.board.hash)) {
+            if (type == unit.type) {
+                numLvl[unit.lvl - 1].push(unit);
+            }
+        }
+        for (const unit of this.bench) {
+            if (unit != null && type == unit.type) {
+                numLvl[unit.lvl - 1].push(unit);
+            }
+        }
+
+        var lvlUpUnit = null;
+        // Checking if combining units is possible
+        if (numLvl[0].length == 2 && numLvl[1].length == 2) { // Can make a lvl 3
+            lvlUpUnit = numLvl[1].shift();
+            delUnits = [...numLvl[0], ...numLvl[1]];
+        } else if (numLvl[0].length == 2) { // Can make a lvl 2
+            lvlUpUnit = numLvl[0].shift();
+            delUnits = numLvl[0];
+        }
+
+        if (lvlUpUnit != null) {
+            console.log(delUnits);
+            for (const unit of delUnits) {
+                console.assert(this.rmv(unit),
+                    "Error: couldn't remove unit during upgrade\n Unit: %o\n UnitHolder: %o", unit, this);
+            }
+            lvlUpUnit.lvlUp();
+        }
+        return lvlUpUnit;
     }
 
     benchGet(index) {
@@ -52,8 +92,8 @@ class UNIT_HOLDER {
     }
 
     boardMove(unit, pos) {
-        if (this.board.get(pos) == undefined && Object.keys(this.board.hash).length < this.maxUnits
-            && pos.validPBoardPos()) {
+        if (this.board.get(pos) == undefined 
+            && Object.keys(this.board.hash).length < this.maxUnits && pos.validPBoardPos()) {
             this.board.push(pos, unit);
             unit.startPos = pos;
             if (unit.benchIdx != -1) {
@@ -71,6 +111,19 @@ class UNIT_HOLDER {
         this.board.del(pos);
         unit.startPos.empty();
         return unit;
+    }
+
+    rmv(unit) {
+        if (unit.benchIdx != -1) {
+            console.assert(unit.startPos.isEmpty(), 
+                "Error: unit on board and bench\nunit: %o", unit);
+            this.bench[unit.benchIdx] = null;
+            return true;
+        } else if (!unit.startPos.isEmpty()) {
+            this.board.del(unit.startPos);
+            return true;
+        }
+        return false;
     }
 }
 

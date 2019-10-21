@@ -26,6 +26,12 @@ class TILE_GRAPH {
         delete this.graph[pos.x + "," + pos.y];
     }
 
+    clear(pos) {
+        let posString = pos.x + "," + pos.y
+        this.graph[posString].occupied = false;
+        this.graph[posString].unit = null;
+    }
+
     log() {
         const entries = Object.entries(this.graph);
         console.log(entries);

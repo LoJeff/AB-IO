@@ -90,8 +90,10 @@ class GAME_BOARD {
             unit.tick--;
             if (unit.tick == 0) {
                 unit.target.hp -= unit.pDmg;
-                console.log("OMG: " + unit.target);
-                if (unit.target.hp < 0) {unit.target.hp = 0};
+                if (unit.target.hp <= 0) {
+                    unit.target.hp = 0;
+                    this.tiles.clear(unit.target.curPos);
+                }
                 unit.target = null;
             }
             return UNIT_STATE.atk;
@@ -99,7 +101,7 @@ class GAME_BOARD {
             let nextMove = this.moveAtkUnit(unit);
             console.assert(nextMove.state, "Error: unknown unit state");
             if (nextMove.state == UNIT_STATE.atk) {
-                unit.tick = 9;
+                unit.tick = unit.atkSpd;
             }
             return nextMove.state;
         }
@@ -327,7 +329,7 @@ class GAME_BOARD {
     // Battle End Functions //
 
     cleanBoard() {
-        for (i in this.tiles.graph) {
+        for (let i in this.tiles.graph) {
             this.tiles.graph[i].occupied = false;
             this.tiles.graph[i].unit = null;
         }

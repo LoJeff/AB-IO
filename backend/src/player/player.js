@@ -86,6 +86,12 @@ class PLAYER {
         }
         return allDead;
     }
+
+    resetBoardUnits() {
+        for (const unit of Object.values(this.board())) {
+            unit.reset();
+        }
+    }
 }
 
 export default PLAYER;

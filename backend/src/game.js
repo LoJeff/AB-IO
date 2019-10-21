@@ -64,6 +64,13 @@ class game {
 			return { end: false, data: data };
 		}
 	}
+
+	battleClean() {
+		this.board.cleanBoard();
+		for (const player of this.players) {
+			player.resetBoardUnits();
+		}
+	}
 }
 
 export default game;

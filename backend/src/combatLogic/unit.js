@@ -18,13 +18,32 @@ class UNIT {
         this.hp = unitInfo.hp;
         this.pDmg = unitInfo.pDmg;
         this.range = unitInfo.range;
+        this.atkSpd = unitInfo.atkSpd;
     }
 
-    resetStats() {
+    lvlUp() {
+        this.lvl += 1;
+        
         let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
         this.hp = unitInfo.hp;
         this.pDmg = unitInfo.pDmg;
         this.range = unitInfo.range;
+        this.atkSpd = unitInfo.atkSpd;
+    }
+
+    reset() {
+        // reset the stats
+        let unitInfo = UNIT_TYPES[this.type].infoLvl[this.lvl];
+        this.hp = unitInfo.hp;
+        this.pDmg = unitInfo.pDmg;
+        this.range = unitInfo.range;
+        this.atkSpd = unitInfo.atkSpd;
+
+        // reset unit combat states
+        this.curPos.empty();
+        this.nextPos.empty();
+        this.target = null;
+        this.tick = 0;
     }
 }
 
